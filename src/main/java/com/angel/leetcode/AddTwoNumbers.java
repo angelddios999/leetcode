@@ -1,15 +1,17 @@
 package com.angel.leetcode;
 
+import java.math.BigInteger;
+
 public class AddTwoNumbers {
 
     public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        int number1 = Integer.valueOf(listNodeToString(l1));
-        int number2 = Integer.valueOf(listNodeToString(l2));
-        int sum = number1 + number2;
+        BigInteger number1 = listNodeToInt(l1);
+        BigInteger number2 = listNodeToInt(l2);
+        BigInteger sum = number1.add(number2);
         return numberToNode(sum);
     }
 
-    private String listNodeToString(ListNode ln) {
+    private BigInteger listNodeToInt(ListNode ln) {
         StringBuilder sb = new StringBuilder();
         ListNode node = ln;
 
@@ -17,22 +19,26 @@ public class AddTwoNumbers {
             sb.append(node.val);
             node = node.next;
         }
-
-        return sb.toString();
+        return new BigInteger(sb.reverse().toString());
     }
 
-    private ListNode numberToNode(int number) {
-        String numberToString = String.valueOf(number);
-        int length = numberToString.length();
-        ListNode node = new ListNode(Integer.valueOf(numberToString.charAt(length - 1)));
+    private ListNode numberToNode(BigInteger number) {
+        String numberToString = new StringBuilder(String.valueOf(number)).reverse().toString();
 
-        ListNode currentNode = node.next;
-        for(int i = length - 2; i >= 0; i--) {
-            currentNode = new ListNode(Integer.valueOf(numberToString.charAt(i)));
-            currentNode = currentNode.next;
+        int[] numbers = new int[numberToString.length()];
+        for(int i = 0; i < numberToString.length(); i++) {
+            numbers[i] = Integer.valueOf(Character.toString(numberToString.charAt(i)));
         }
 
-        return node;
+        ListNode listNode = new ListNode(numbers[0]);
+
+        ListNode tempNode = listNode;
+        for(int i = 1; i < numbers.length; i++) {
+            tempNode.next = new ListNode(numbers[i]);
+            tempNode = tempNode.next;
+        }
+
+        return  listNode;
     }
 }
 
