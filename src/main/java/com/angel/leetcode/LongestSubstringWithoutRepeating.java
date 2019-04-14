@@ -1,35 +1,32 @@
 package com.angel.leetcode;
 
-import java.util.HashSet;
-import java.util.Objects;
-
 public class LongestSubstringWithoutRepeating {
     public int lengthOfLongestSubstring(String s) {
-        int longestSubstring  = 0;
+        int longestSubstring = 0;
 
-        if(Objects.nonNull(s)) {
-            int length = s.length();
-            HashSet<Character> characters = new HashSet<>();
-
-            int index = 0;
-            int subIndex = 0;
-            while(index < length) {
-                char c = s.charAt(index);
-                if(characters.contains(c)) {
-                    if(characters.size() > longestSubstring) {
-                        longestSubstring = characters.size();
-                    }
-                    characters = new HashSet<>();
-                    index = subIndex;
-                    subIndex++;
-                } else {
-                    characters.add(c);
-                }
-
-                index++;
+        if(s != null) {
+            char[] charsInWord = s.toCharArray();
+            if(charsInWord.length == 1) {
+                return 1;
             }
-            if(characters.size() > longestSubstring) {
-                longestSubstring = characters.size();
+
+            for(int i = 0; i < charsInWord.length; i++) {
+                boolean[] letters = new boolean[95];
+                int currentLength = 0;
+
+                for(int j = i; j < charsInWord.length; j++) {
+                    char c = charsInWord[j];
+                    if(!letters[c - ' ']) {
+                        currentLength++;
+
+                        if(currentLength > longestSubstring) {
+                            longestSubstring = currentLength;
+                        }
+                        letters[c - ' '] = true;
+                    } else {
+                        break;
+                    }
+                }
             }
         }
 
