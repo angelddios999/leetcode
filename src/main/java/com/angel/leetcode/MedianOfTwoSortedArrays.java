@@ -2,54 +2,34 @@ package com.angel.leetcode;
 
 public class MedianOfTwoSortedArrays {
     public double findMedianSortedArrays(int[] nums1, int[] nums2) {
-        double result = 0d;
-        int[] merged = mergeArrays(nums1, nums2);
-        int mergedLength = merged.length;
+        int half = (nums1.length + nums2.length) / 2 + 1;
+        boolean evenLength = ((nums1.length + nums2.length) % 2) == 0;
+        double median = 0d;
+        int current = 0, i = 0, j = 0;
 
-        if(mergedLength % 2 == 0) {
-            result = merged[(mergedLength / 2) - 1] + merged[mergedLength / 2];
-            result = result / 2;
-        } else {
-            result = merged[(mergedLength / 2)];
-        }
+        while (i < half && j < half) {
+            int left = i < nums1.length ? nums1[i] : Integer.MAX_VALUE;
+            int right = j < nums2.length ? nums2[j] : Integer.MAX_VALUE;
 
-        return result;
-    }
-
-    int[] mergeArrays(int[] nums1, int[] nums2) {
-        int length1 = nums1.length;
-        int length2 = nums2.length;
-        int[] merged = new int[length1 + length2];
-
-        int index1 = 0;
-        int index2 = 0;
-        int mergedIndex = 0;
-
-        while(index1 < length1 && index2 < length2) {
-            if(nums1[index1] < nums2[index2]) {
-                merged[mergedIndex] = nums1[index1];
-                index1++;
+            int previous = current;
+            if (left < right) {
+                current = left;
+                i++;
             } else {
-                merged[mergedIndex] = nums2[index2];
-                index2++;
+                current = right;
+                j++;
             }
-            mergedIndex++;
-        }
 
-        if(index1 < length1) {
-            for(int i = index1; i < length1; i++) {
-                merged[mergedIndex] = nums1[i];
-                mergedIndex++;
-            }
-        }
-
-        if(index2 < length2) {
-            for(int i = index2; i < length2; i++) {
-                merged[mergedIndex] = nums2[i];
-                mergedIndex++;
+            if (i + j == half) {
+                if (evenLength) {
+                    median = (current + previous) / 2d;
+                } else {
+                    median = current;
+                }
+                break;
             }
         }
 
-        return  merged;
+        return median;
     }
 }
