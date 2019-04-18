@@ -5,33 +5,30 @@ import java.util.Objects;
 public class LongestPalindrome {
 
     public String longestPalindrome(String s) {
-        if(Objects.nonNull(s)) {
-            if(s.length() == 1) {
-                return s;
-            } else {
-                int palindromeSize = s.length();
-
-                while(palindromeSize > 0) {
-                    for(int i = 0; i + palindromeSize <= s.length(); i++) {
-                        String subString = s.substring(i, i + palindromeSize);
-                        if(isPalindrome(subString)) {
-                            return subString;
-                        }
+        if(s.length() < 2) {
+            return s;
+        } else {
+            int wordLength = s.length();
+            char[] chars = s.toCharArray();
+            for (int subWordLength = wordLength; subWordLength > 1; subWordLength--) {
+                for (int leftIndex = 0; leftIndex + subWordLength <= wordLength; leftIndex++) {
+                    int rightIndex = leftIndex + subWordLength;
+                    if (isPalindrome(leftIndex, rightIndex - 1, chars)) {
+                        return s.substring(leftIndex, rightIndex);
                     }
-                    palindromeSize--;
                 }
             }
+            return s.substring(0, 1);
         }
-
-        return "";
     }
 
-    private boolean isPalindrome(String word) {
-        for(int i = 0, j = word.length() - 1; i < j; i++, j--) {
-            if(word.charAt(i) != word.charAt(j)) {
+    private boolean isPalindrome(int left, int right, char[] chars) {
+        for (int i = left, j =right; i < j ; i++, j--) {
+            if (chars[i] != chars[j]) {
                 return false;
             }
         }
+
         return true;
     }
 }
