@@ -1,43 +1,41 @@
 package com.angel.leetcode;
-import java.util.Objects;
 
 public class ZigZagConversion {
     public String convert(String s, int numRows) {
-        String result = "";
-        if(Objects.nonNull(s)) {
-            int wordLength = s.length();
-            if(wordLength == 1 || numRows == 1 || wordLength == numRows) {
-                result = s;
-            } else {
-                StringBuilder[] sbList = new StringBuilder[numRows];
-                for(int i = 0; i < numRows; i++){
-                    sbList[i] = new StringBuilder();
-                }
-                int rowIndex = 0;
-                boolean down = false;
-                char[] chars = s.toCharArray();
+        if (numRows<2 || s.length() <= numRows) {
+            return s;
+        } else {
+            int length = s.length();
+            char[] chars = s.toCharArray();
+            char[] swapped = new char[length];
+            int leap = (numRows - 1) * 2;
+            int mainIndex = 0;
 
-                for(char c : chars) {
-                    sbList[rowIndex].append(c);
-                    if(rowIndex == 0 || rowIndex == numRows - 1) {
-                        down = !down;
+            for (int rowNumber = 0; rowNumber < numRows; rowNumber++) {
+                int innerIndex = rowNumber;
+
+                if(rowNumber == 0 || rowNumber == numRows - 1) {
+                    while(innerIndex < length && mainIndex < length) {
+                        swapped[mainIndex] = chars[innerIndex];
+                        mainIndex++;
+                        innerIndex+=leap;
                     }
-
-                    rowIndex += down ? 1 : -1;
+                } else {
+                    int leap2 = leap - (rowNumber * 2);
+                    int leap3 = leap - leap2;
+                    while(innerIndex < length  && mainIndex < length) {
+                        swapped[mainIndex] = chars[innerIndex];
+                        mainIndex++;
+                        innerIndex+=leap2;
+                        if (innerIndex < length) {
+                            swapped[mainIndex] = chars[innerIndex];
+                            mainIndex++;
+                            innerIndex+=leap3;
+                        }
+                    }
                 }
-
-                result = getMergedString(sbList);
             }
+            return new String(swapped);
         }
-
-        return result;
-    }
-
-    private String getMergedString(StringBuilder[] sbList) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for(StringBuilder sb : sbList) {
-            stringBuilder.append(sb);
-        }
-        return stringBuilder.toString();
     }
 }
