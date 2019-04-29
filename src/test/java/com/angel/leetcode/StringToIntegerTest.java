@@ -39,4 +39,14 @@ public class StringToIntegerTest {
         StringToInteger stoi = new StringToInteger();
         Assert.assertEquals(-5, stoi.myAtoi("-5-"));
     }
+    @Test
+    public void testMyAtoi8() {
+        StringToInteger stoi = new StringToInteger();
+        Assert.assertEquals(2147483647, stoi.myAtoi("2147483648"));
+    }
+    @Test
+    public void testMyAtoi9() {
+        StringToInteger stoi = new StringToInteger();
+        Assert.assertEquals(12345678, stoi.myAtoi("  0000000000012345678"));
+    }
 }

@@ -19,7 +19,7 @@ public class StringToInteger {
             } else if (c <= '9' && c >= '0') {
                 // Numbers
                 int value = c - '0';
-                if (inBounds((result * 10L) + value)) {
+                if (inBounds(result, value)) {
                     result = (result * 10) + value;
                     numberStarted = true;
                 } else {
@@ -47,7 +47,8 @@ public class StringToInteger {
         return negative ? result * -1 : result;
     }
 
-    private boolean inBounds(long value) {
-        return value <= Integer.MAX_VALUE && value >= Integer.MIN_VALUE;
+    private boolean inBounds(int a, int b) {
+        int result = (a * 10) + b;
+        return (result >= 0 && ((result - b) / 10) == a);
     }
 }
